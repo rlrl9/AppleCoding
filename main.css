@@ -26,9 +26,10 @@
   background: rgba(0, 0, 0, 0.5);
   z-index: 5;
   padding: 30px;
-  visibility: hidden;
+  display: none;
+  /* visibility: hidden;
   opacity: 0;
-  transition: all 1s;
+  transition: all 1s; */
 }
 .white-bg {
   background: white;
@@ -37,6 +38,11 @@
 }
 
 .show-modal {
-  visibility: visible;
-  opacity: 1;
+    display: block;
+  /* visibility: visible;
+  opacity: 1; */
+}
+.main-bg{
+    padding: 100px 20px;
+    background: lightgrey;
 }
