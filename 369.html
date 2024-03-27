@@ -8,10 +8,12 @@
   <body>
     <script>
         const num = prompt("숫자를 입력하세요");
-        if(num%3==0){
-            console.log('3의 배수입니다');
-        }else {
-            console.log('3의 배수가 아닙니다.')
+        if(num%9==0){
+            console.log('박수 2번');
+        }else if(num%3==0){
+            console.log('박수 1번');
+        }else{
+            console.log('통과');
         }
     </script>
   </body>
