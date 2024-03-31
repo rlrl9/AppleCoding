@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>공인중개사 시험 합불 테스트</title>
+</head>
+
+<body>
+    <script>
+        var [num1, num2] = prompt("두 숫자를 입력하세요").split(" ");
+        num1 = parseInt(num1);
+        num2 = parseInt(num2);
+        if (num1<0||num1>100||num2<0||num2>100){
+            console.log('범위에 맞는 숫자를 입력해주세요');
+        }
+        else if (num1+num2<120) {
+            console.log('불합격');
+        } else{
+            if(num1<40||num2<40){
+                console.log('불합격');
+            }else{
+                console.log('합격');
+            }
+        }
+    </script>
+</body>
+
+</html>
