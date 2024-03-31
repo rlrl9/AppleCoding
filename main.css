@@ -5,7 +5,7 @@
   border-radius: 5px;
   display: none;
   margin-bottom: 2rem;
-}
+}ㄴ
 
 #alert-close-btn {
   display: none;
@@ -38,11 +38,11 @@
 }
 
 .show-modal {
-    display: block;
+  display: block;
   /* visibility: visible;
   opacity: 1; */
 }
-.main-bg{
-    padding: 100px 20px;
-    background: lightgrey;
+.main-bg {
+  padding: 100px 20px;
+  background: lightgrey;
 }
