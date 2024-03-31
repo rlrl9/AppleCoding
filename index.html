@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 
-<head>
+<head id="head">
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,7 +13,7 @@
     <title>Hello, world!</title>
 </head>
 
-<body>
+<body id="total">
     <div class="black-bg">
         <div class="white-bg">
             <h4>로그인하세요</h4>
@@ -31,7 +31,8 @@
     </div>
     <nav class="navbar navbar-light bg-light">
         <div class="container-fluid">
-            <span class="navbar-brand">Navbar</span>
+            <span class="navbar-brand">JSShop</span>
+            <span class="badge bg-white" style="color: black;" id="darkButton">Light 🔄</span>
             <button class="navbar-toggler" type="button">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -53,32 +54,7 @@
         crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script>
-
-        document.getElementsByClassName('navbar-toggler')[0]
-            .addEventListener('click', function () {
-                document.getElementsByClassName('list-group')[0].classList.toggle('show');
-            })
-        document.getElementById('login').addEventListener('click', function () {
-            document.querySelector('.black-bg').classList.add('show-modal');
-        })
-        document.getElementById('close').addEventListener('click', function () {
-            document.querySelector('.black-bg').classList.remove('show-modal');
-        })
-        document.querySelector('form').addEventListener('submit', function (e) {
-            if (document.getElementById('email').value == '') {
-                e.preventDefault()
-                alert('이메일을 입력하세요');
-            }
-            if (document.getElementById('pw').value == '') {
-                e.preventDefault()
-                alert('비밀번호를 입력하세요');
-            } else if (document.getElementById('pw').value.length < 6) {
-                e.preventDefault()
-                alert('비밀번호를 6자 이상 입력하세요');
-            }
-        })
-    </script>
+    <script src="./index.js"></script>
 </body>
 
 </html>

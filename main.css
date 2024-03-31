@@ -46,3 +46,7 @@
   padding: 100px 20px;
   background: lightgrey;
 }
+.dark{
+    background: black;
+    color: white;
+}
