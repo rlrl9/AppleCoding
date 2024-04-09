@@ -1,0 +1,18 @@
+<p>태조 이성계가 태어난 년도는?</p>
+<input type="text" id="answer">
+<button id="send-answer">제출</button>
+
+<script>
+    var cnt=0;
+    document.getElementById('send-answer').addEventListener("click", function () {
+        if(document.getElementById("answer").value == "1335"){
+            alert('성공');
+            cnt=0;
+        }else{
+            cnt++;
+            if(cnt>2){
+                alert('바보');
+            }
+        }
+    });
+</script>

@@ -13,6 +13,9 @@ document.querySelector("form").addEventListener("submit", function (e) {
   if (document.getElementById("email").value == "") {
     e.preventDefault();
     alert("이메일을 입력하세요");
+  }else if(!/\S+@\S+\.\S+/.test(document.getElementById("email").value)){
+    e.preventDefault();
+    alert('이메일 형식을 지켜주세요');
   }
   if (document.getElementById("pw").value == "") {
     e.preventDefault();
@@ -20,6 +23,9 @@ document.querySelector("form").addEventListener("submit", function (e) {
   } else if (document.getElementById("pw").value.length < 6) {
     e.preventDefault();
     alert("비밀번호를 6자 이상 입력하세요");
+  } else if(!/[A-Z]/.test(document.getElementById("pw").value)){
+    e.preventDefault();
+    alert("대문자를 입력해주세요");
   }
 });
 var ifDark = 0;
@@ -47,3 +53,10 @@ document.getElementById("darkButton").addEventListener("click", function () {
     document.querySelector(".navbar").classList.add("bg-light");
   }
 });
+initialTime=5;
+function timer(){
+  initialTime--;
+  document.getElementById("num").innerHTML=initialTime;
+}
+setTimeout(function(){document.querySelector(".alert").style.display='none'},5000)
+setInterval(timer,1000)
