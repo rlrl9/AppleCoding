@@ -91,3 +91,20 @@ document.querySelector(".next").addEventListener("click", function () {//다음�
     nowPic++;
   }
 });
+window.addEventListener('scroll',function(){
+  if (window.scrollY>100){
+    document.querySelector('.navbar-brand').style.fontSize = "20px";
+  }
+  else{
+    document.querySelector('.navbar-brand').style.fontSize = "30px";
+  }
+  document.querySelector('.progress-bar').style.width = (document.querySelector('html').scrollTop / (document.querySelector('html').scrollHeight-document.querySelector('html').clientHeight)) * 100 + '%';
+})
+document.querySelector('.lorem').addEventListener('scroll',function(){
+  var scrollAmount = document.querySelector('.lorem').scrollTop;
+  var realAmount = document.querySelector('.lorem').scrollHeight;
+  var eyeAmount = document.querySelector('.lorem').clientHeight;
+  if(scrollAmount+eyeAmount>realAmount-1){
+    alert('약관을 다 읽었습니다!');
+  }
+})
