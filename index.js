@@ -108,3 +108,8 @@ document.querySelector('.lorem').addEventListener('scroll',function(){
     alert('약관을 다 읽었습니다!');
   }
 })
+document.querySelector('.black-bg').addEventListener('click', function(e){
+  if(e.target==document.querySelector('.black-bg')){
+    document.querySelector('.black-bg').classList.remove('show-modal');
+  }
+  })//검은배경 누르면 모달창 닫히게
