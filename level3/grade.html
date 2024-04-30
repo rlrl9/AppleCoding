@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>grade</title>
+</head>
+
+<body>
+    <script>
+        function func(l,g){
+            var sum=0
+            l.forEach((a) => {
+                sum+=a
+            });
+            var avg=sum/l.length
+            if(avg<=g){
+                console.log(`평균보다 ${g-avg}점 올랐네요😁`);
+            }
+            else{
+                console.log(`평균보다 ${avg-g}점 떨어졌네요..😥`);
+            }
+        }
+        // func([10, 20, 30, 40, 50], 40)
+        // func([40, 40, 40], 20)
+    </script>
+</body>
+
+</html>
