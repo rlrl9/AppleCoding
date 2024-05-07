@@ -14,43 +14,57 @@
 </head>
 
 <body id="total">
-    <div class="card-group container">
-        <div class="card">
-            <img src="https://via.placeholder.com/600">
-            <div class="card-body">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-sm-4">
+                <img src="https://via.placeholder.com/600" class="w-100">
                 <h5>Card title</h5>
                 <p>가격 : 70000</p>
-                <button class="btn btn-danger">주문하기</button>
             </div>
-        </div>
-        <div class="card">
-            <img src="https://via.placeholder.com/600">
-            <div class="card-body">
-                <h5>Card title</h5>
-                <p>가격 : 70000</p>
-                <button class="btn btn-danger">주문하기</button>
-            </div>
-        </div>
-        <div class="card">
-            <img src="https://via.placeholder.com/600">
-            <div class="card-body">
-                <h5>Card title</h5>
-                <p>가격 : 70000</p>
-                <button class="btn btn-danger">주문하기</button>
-            </div>
+
         </div>
     </div>
-
+    <div class="container">
+        <button class="btn btn-danger" id="more">더보기</button>
+    </div>
     <script>
+        var plus = 1;
         var products = [
             { id: 0, price: 70000, title: 'Blossom Dress' },
             { id: 1, price: 50000, title: 'Springfield Shirt' },
             { id: 2, price: 60000, title: 'Black Monastery' }
         ];
-        for (i = 0; i < 3; i++) {
-            document.querySelectorAll('.card-body h5')[i].innerHTML = products[i].title;
-            document.querySelectorAll('.card-body p')[i].innerHTML = '가격 : ' + products[i].price;
+        document.querySelector('.row').innerHTML = '';
+        function displayProducts(productList) {
+            
+            productList.forEach(item => {
+                var temp = `<div class="col-sm-4">
+            <img src="https://via.placeholder.com/600" class="w-100">
+            <h5>${item.title}</h5>
+            <p>가격 : ${item.price}</p>
+        </div>`;
+                document.querySelector('.row').insertAdjacentHTML('beforeend', temp);
+            });
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            displayProducts(products);
+
+            document.getElementById('more').addEventListener('click', function () {
+                fetch(`https://codingapple1.github.io/js/more${plus}.json`)
+                    .then(response => response.json())
+                    .then(data => {
+                        displayProducts(data);
+                        plus++;
+                        if (plus > 2) {
+                            document.getElementById('more').style.display = 'none';
+                        }
+                    })
+                    .catch(error => console.error('Fetch error:', error));
+            });
+        });
+
     </script>
 </body>
 
