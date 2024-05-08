@@ -14,6 +14,15 @@
 </head>
 
 <body id="total">
+    <div class="container my-3">
+        <button class="btn btn-danger" id="price">가격순 정렬</button>
+    </div>
+    <div class="container my-3">
+        <button class="btn btn-danger" id="sort1">다나가순정렬</button>
+    </div>
+    <div class="container my-3">
+        <button class="btn btn-danger" id="filter">6만원이하</button>
+    </div>
     <div class="container">
         <div class="row">
 
@@ -37,12 +46,13 @@
         ];
         document.querySelector('.row').innerHTML = '';
         function displayProducts(productList) {
-            
+
             productList.forEach(item => {
                 var temp = `<div class="col-sm-4">
             <img src="https://via.placeholder.com/600" class="w-100">
             <h5>${item.title}</h5>
             <p>가격 : ${item.price}</p>
+            <button class="buy">구매</button>
         </div>`;
                 document.querySelector('.row').insertAdjacentHTML('beforeend', temp);
             });
@@ -63,6 +73,52 @@
                     })
                     .catch(error => console.error('Fetch error:', error));
             });
+            document.getElementById('price').addEventListener('click', function () {
+                products.sort(function (a, b) {
+                    return a.price - b.price
+                });
+                document.querySelector('.row').innerHTML = '';
+                displayProducts(products);
+            });
+            document.getElementById('sort1').addEventListener('click', function () {
+                products.sort(function (a, b) {
+                    if (a.title < b.title) {
+                        return 1
+                    }
+                    else {
+                        return -1
+                    }
+                });
+                document.querySelector('.row').innerHTML = '';
+                displayProducts(products);
+            });
+            document.getElementById('filter').addEventListener('click', function () {
+                var newpro = products.filter(a => a.price <= 60000)
+                document.querySelector('.row').innerHTML = '';
+                displayProducts(newpro);
+            });
+            document.querySelectorAll('.buy').forEach(button => {
+                button.addEventListener('click', function (event) {
+                    var title = event.target.parentElement.querySelector('h5').textContent;
+                    var price = event.target.parentElement.querySelector('p').textContent;
+                    price = price.replace(/가격\s*:/, '').trim(); // '가격' 다음의 공백(0개 이상)과 ':'을 모두 공백으로 대체하고 양쪽 공백 제거
+
+                    var cartItems = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
+                    var existingItem = cartItems.find(item => item.title == title);
+                    if (existingItem) {
+                        // 이미 있는 상품이라면 수량을 증가시킴
+                        existingItem.quantity = existingItem.quantity + 1;
+                    } else {
+                        // 새로운 상품인 경우에는 수량을 1로 설정하여 추가
+                        cartItems.push({ 'title': title, 'price': price, 'quantity': 1 });
+                    }
+                    localStorage.setItem('cart', JSON.stringify(cartItems));
+
+                    console.log(cartItems);
+                });
+            });
+
+
         });
 
     </script>
