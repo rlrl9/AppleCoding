@@ -113,3 +113,71 @@ document.querySelector('.black-bg').addEventListener('click', function(e){
     document.querySelector('.black-bg').classList.remove('show-modal');
   }
   })//검은배경 누르면 모달창 닫히게
+let start = 0;
+let ifPress = false;
+let moveX = 0;
+document.querySelectorAll('.slide-box')[0].addEventListener('mousedown',function(e){
+  start=e.clientX;
+  ifPress=true;
+})
+document.querySelectorAll('.slide-box')[0].addEventListener('mousemove',function(e){
+  if (ifPress){
+    moveX=e.clientX - start;
+    document.querySelectorAll('.slide-box')[0].style.transform = `translateX(${moveX}px)`;
+  }
+})
+document.querySelectorAll('.slide-box')[0].addEventListener('mouseup',function(e){
+  ifPress=false;
+  console.log(moveX);
+  if(moveX<-100){
+    console.log('go');
+    document.querySelector(".slide-container").style.transition =
+    "all 0.5s";
+    document.querySelector(".slide-container").style.transform =
+    "translateX(-100vw)";
+  }else{
+    console.log('stop');
+    // document.querySelector(".slide-container").style.transition =
+    // "all 0.5s";
+    document.querySelector(".slide-container").style.transform =
+    "translateX(0vw)";
+  }
+  setTimeout(()=>{
+    document.querySelector(".slide-container").style.transition =
+    "none";
+  },500)
+})
+let start_m = 0;
+let ifPress_m = false;
+let moveX_m = 0;
+document.querySelectorAll('.slide-box')[0].addEventListener('touchstart',function(e){
+  start_m=e.touches[0].clientX;
+  ifPress_m=true;
+})
+document.querySelectorAll('.slide-box')[0].addEventListener('touchmove',function(e){
+  if (ifPress_m){
+    moveX_m=e.touches[0].clientX - start_m;
+    document.querySelectorAll('.slide-box')[0].style.transform = `translateX(${moveX_m}px)`;
+  }
+})
+document.querySelectorAll('.slide-box')[0].addEventListener('touchend',function(e){
+  ifPress_m=false;
+  console.log(moveX_m);
+  if(moveX_m<-100){
+    console.log('go');
+    document.querySelector(".slide-container").style.transition =
+    "all 0.5s";
+    document.querySelector(".slide-container").style.transform =
+    "translateX(-100vw)";
+  }else{
+    console.log('stop');
+    // document.querySelector(".slide-container").style.transition =
+    // "all 0.5s";
+    document.querySelector(".slide-container").style.transform =
+    "translateX(0vw)";
+  }
+  setTimeout(()=>{
+    document.querySelector(".slide-container").style.transition =
+    "none";
+  },500)
+})
