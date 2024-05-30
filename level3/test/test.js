@@ -20,7 +20,7 @@ function show(data) {
       "beforeend",
       `
           <div class="col-md-3">
-            <div class="item" draggable="true" data-id="${a.id}">
+            <div class="item" draggable="true" ondragstart="drag(event)" id="item-${a.id}">
               <img src="${a.photo}">
               <h4>${a.title}</h4>
               <h4>${a.brand}</h4>
@@ -61,3 +61,21 @@ document.getElementById("search").addEventListener("input", function () {
 /****************
  * 드래그 앤 드롭 *
  ****************/
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  //ev.target.appendChild(document.getElementById(data));
+  var draggedElement = document.getElementById(data);
+  // Ensure the target is a valid drop zone
+  if (ev.target.classList.contains('basket')) {
+      ev.target.appendChild(draggedElement.cloneNode(true));
+  }
+}
