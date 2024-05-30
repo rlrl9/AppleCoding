@@ -22,8 +22,8 @@ function show(data) {
           <div class="col-md-3">
             <div class="item" draggable="true" ondragstart="drag(event)" id="item-${a.id}">
               <img src="${a.photo}">
-              <h4>${a.title}</h4>
-              <h4>${a.brand}</h4>
+              <h4 class="title">${a.title}</h4>
+              <h4 class="brand">${a.brand}</h4>
               <p>가격 : ${a.price}</p>
               <button class="add" data-id="${a.id}">담기</button>
             </div>
@@ -67,15 +67,32 @@ function allowDrop(ev) {
 
 function drag(ev) {
   ev.dataTransfer.setData("text", ev.target.id);
+  ev.dataTransfer.setData("img", ev.target.querySelector('img').src);
+  ev.dataTransfer.setData("title", ev.target.querySelector('.title').innerText);
+  ev.dataTransfer.setData("brand", ev.target.querySelector('.brand').innerText);
 }
 
 function drop(ev) {
   ev.preventDefault();
   var data = ev.dataTransfer.getData("text");
+  var imgData = ev.dataTransfer.getData("img");
+  var titleData = ev.dataTransfer.getData("title");
+  var brandData = ev.dataTransfer.getData("brand");
   //ev.target.appendChild(document.getElementById(data));
   var draggedElement = document.getElementById(data);
   // Ensure the target is a valid drop zone
   if (ev.target.classList.contains('basket')) {
-      ev.target.appendChild(draggedElement.cloneNode(true));
+      //ev.target.appendChild(draggedElement.cloneNode(true));
+      ev.target.insertAdjacentHTML(
+        "beforeend",
+        `
+            <div class="col-md-3">
+              <div>
+                <img src="${imgData}">
+                <h4>${titleData}</h4>
+                <h4>${brandData}</h4>
+              </div>
+            </div>`
+      );
   }
 }
