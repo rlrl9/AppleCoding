@@ -21,11 +21,11 @@ function show(data) {
       `
           <div class="col-md-3">
             <div class="item" draggable="true" ondragstart="drag(event)" id="item-${a.id}">
-              <img src="${a.photo}">
+              <img src="${a.photo}" draggable="false">
               <h4 class="title">${a.title}</h4>
               <h4 class="brand">${a.brand}</h4>
-              <p>가격 : ${a.price}</p>
-              <button class="add" data-id="${a.id}">담기</button>
+              <p class="price">가격 : ${a.price}</p>
+              <button class="add" data-id="${a.id}" onclick="handleDrop(event)">담기</button>
             </div>
           </div>`
     );
@@ -61,6 +61,7 @@ document.getElementById("search").addEventListener("input", function () {
 /****************
  * 드래그 앤 드롭 *
  ****************/
+var finalPrice=0;
 function allowDrop(ev) {
   ev.preventDefault();
 }
@@ -70,29 +71,89 @@ function drag(ev) {
   ev.dataTransfer.setData("img", ev.target.querySelector('img').src);
   ev.dataTransfer.setData("title", ev.target.querySelector('.title').innerText);
   ev.dataTransfer.setData("brand", ev.target.querySelector('.brand').innerText);
+  ev.dataTransfer.setData("price", ev.target.querySelector('.price').innerText);
 }
 
 function drop(ev) {
   ev.preventDefault();
   var data = ev.dataTransfer.getData("text");
+  console.log(data);
   var imgData = ev.dataTransfer.getData("img");
   var titleData = ev.dataTransfer.getData("title");
   var brandData = ev.dataTransfer.getData("brand");
-  //ev.target.appendChild(document.getElementById(data));
-  var draggedElement = document.getElementById(data);
-  // Ensure the target is a valid drop zone
+  var priceData = ev.dataTransfer.getData("price");
+  
   if (ev.target.classList.contains('basket')) {
-      //ev.target.appendChild(draggedElement.cloneNode(true));
-      ev.target.insertAdjacentHTML(
-        "beforeend",
-        `
-            <div class="col-md-3">
-              <div>
-                <img src="${imgData}">
-                <h4>${titleData}</h4>
-                <h4>${brandData}</h4>
-              </div>
-            </div>`
-      );
+      const existingItem = ev.target.querySelector(`#${data}`);
+      if (existingItem) {
+        let countElement = existingItem.querySelector(".count");
+        let number = parseInt(countElement.innerText);
+        number += 1;
+        countElement.innerText = number;
+        finalPrice+=parseInt(priceData.substr(5));
+    } else {
+        let number = 1;
+        ev.target.insertAdjacentHTML(
+            "beforeend",
+            `
+                <div class="col-md-3 white-bg" id="${data}">
+                  <div>
+                    <img src="${imgData}" alt="Product Image">
+                    <h4 class="title">${titleData}</h4>
+                    <h4 class="brand">${brandData}</h4>
+                    <p class="price">${priceData}</p>
+                    <p>수량: <span class="count">${number}</span></p>
+                    
+                  </div>
+                </div>`
+        );
+        finalPrice+=parseInt(priceData.substr(5));
+    }
   }
+  // var finalPrice=0;
+  // document.querySelectorAll(".col-md-3").forEach(item => {
+  //   const price = parseFloat(item.querySelector(".price").innerText);
+  //   const count = parseInt(item.querySelector(".count").innerText.substr(5));
+  //   finalPrice += price * count;
+// });
+  document.querySelector(".final-price").innerText=finalPrice;
+}
+function handleDrop(ev) {
+  ev.preventDefault();
+  var target=ev.target.parentElement;
+  var data = target.id;
+  console.log(data);
+  var imgData = target.querySelector("img").src;
+  var titleData = target.querySelector(".title").innerText;
+  var brandData = target.querySelector(".brand").innerText;
+  var priceData = target.querySelector(".price").innerText;
+  
+  if (target.classList.contains('basket')) {
+      const existingItem = target.querySelector(`#${data}`);
+      if (existingItem) {
+        let countElement = existingItem.querySelector(".count");
+        let number = parseInt(countElement.innerText);
+        number += 1;
+        countElement.innerText = number;
+        finalPrice+=parseInt(priceData.substr(5));
+    } else {
+        let number = 1;
+        target.insertAdjacentHTML(
+            "beforeend",
+            `
+                <div class="col-md-3 white-bg" id="${data}">
+                  <div>
+                    <img src="${imgData}" alt="Product Image">
+                    <h4 class="title">${titleData}</h4>
+                    <h4 class="brand">${brandData}</h4>
+                    <p class="price">${priceData}</p>
+                    <p>수량: <span class="count">${number}</span></p>
+                    
+                  </div>
+                </div>`
+        );
+        finalPrice+=parseInt(priceData.substr(5));
+    }
+  }
+  document.querySelector(".final-price").innerText=finalPrice;
 }
