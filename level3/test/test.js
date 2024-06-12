@@ -61,17 +61,17 @@ document.getElementById("search").addEventListener("input", function () {
 /****************
  * 드래그 앤 드롭 *
  ****************/
-var finalPrice=0;
+var finalPrice = 0;
 function allowDrop(ev) {
   ev.preventDefault();
 }
 
 function drag(ev) {
   ev.dataTransfer.setData("text", ev.target.id);
-  ev.dataTransfer.setData("img", ev.target.querySelector('img').src);
-  ev.dataTransfer.setData("title", ev.target.querySelector('.title').innerText);
-  ev.dataTransfer.setData("brand", ev.target.querySelector('.brand').innerText);
-  ev.dataTransfer.setData("price", ev.target.querySelector('.price').innerText);
+  ev.dataTransfer.setData("img", ev.target.querySelector("img").src);
+  ev.dataTransfer.setData("title", ev.target.querySelector(".title").innerText);
+  ev.dataTransfer.setData("brand", ev.target.querySelector(".brand").innerText);
+  ev.dataTransfer.setData("price", ev.target.querySelector(".price").innerText);
 }
 
 function drop(ev) {
@@ -82,78 +82,130 @@ function drop(ev) {
   var titleData = ev.dataTransfer.getData("title");
   var brandData = ev.dataTransfer.getData("brand");
   var priceData = ev.dataTransfer.getData("price");
-  
-  if (ev.target.classList.contains('basket')) {
-      const existingItem = ev.target.querySelector(`#${data}`);
-      if (existingItem) {
-        let countElement = existingItem.querySelector(".count");
-        let number = parseInt(countElement.innerText);
-        number += 1;
-        countElement.innerText = number;
-        finalPrice+=parseInt(priceData.substr(5));
+
+  if (ev.target.classList.contains("basket")) {
+    const existingItem = ev.target.querySelector(`#${data}`);
+    if (existingItem) {
+      let countElement = existingItem.querySelector(".count");
+      let number = parseInt(countElement.value);
+      number += 1;
+      countElement.value = number;
+      finalPrice += parseInt(priceData.substr(5));
     } else {
-        let number = 1;
-        ev.target.insertAdjacentHTML(
-            "beforeend",
-            `
+      let number = 1;
+      ev.target.insertAdjacentHTML(
+        "beforeend",
+        `
                 <div class="col-md-3 white-bg" id="${data}">
                   <div>
                     <img src="${imgData}" alt="Product Image">
                     <h4 class="title">${titleData}</h4>
                     <h4 class="brand">${brandData}</h4>
                     <p class="price">${priceData}</p>
-                    <p>수량: <span class="count">${number}</span></p>
+                    <p>수량: <input type="number" class="count" value="${number}" min="1"></p>
                     
                   </div>
                 </div>`
-        );
-        finalPrice+=parseInt(priceData.substr(5));
+      );
+      finalPrice += parseInt(priceData.substr(5));
     }
   }
-  // var finalPrice=0;
-  // document.querySelectorAll(".col-md-3").forEach(item => {
-  //   const price = parseFloat(item.querySelector(".price").innerText);
-  //   const count = parseInt(item.querySelector(".count").innerText.substr(5));
-  //   finalPrice += price * count;
-// });
-  document.querySelector(".final-price").innerText=finalPrice;
+  document.querySelector(".final-price").innerText = finalPrice;
 }
 function handleDrop(ev) {
   ev.preventDefault();
-  var target=ev.target.parentElement;
+  var target = ev.target.parentElement;
   var data = target.id;
   console.log(data);
   var imgData = target.querySelector("img").src;
   var titleData = target.querySelector(".title").innerText;
   var brandData = target.querySelector(".brand").innerText;
   var priceData = target.querySelector(".price").innerText;
-  
-  if (target.classList.contains('basket')) {
-      const existingItem = target.querySelector(`#${data}`);
-      if (existingItem) {
-        let countElement = existingItem.querySelector(".count");
-        let number = parseInt(countElement.innerText);
-        number += 1;
-        countElement.innerText = number;
-        finalPrice+=parseInt(priceData.substr(5));
-    } else {
-        let number = 1;
-        target.insertAdjacentHTML(
-            "beforeend",
-            `
+  console.log(imgData);
+  const existingItem = document
+    .querySelector(".basket")
+    .querySelector(`#${data}`);
+  console.log(existingItem);
+  if (existingItem) {
+    let countElement = existingItem.querySelector(".count");
+    let number = parseInt(countElement.value);
+    number += 1;
+    countElement.value = number;
+    finalPrice += parseInt(priceData.substr(5));
+  } else {
+    let number = 1;
+    document.querySelector(".basket").insertAdjacentHTML(
+      "beforeend",
+      `
                 <div class="col-md-3 white-bg" id="${data}">
                   <div>
                     <img src="${imgData}" alt="Product Image">
                     <h4 class="title">${titleData}</h4>
                     <h4 class="brand">${brandData}</h4>
                     <p class="price">${priceData}</p>
-                    <p>수량: <span class="count">${number}</span></p>
+                    <p>수량: <input type="number" class="count" value="${number}" min="1"></p>
                     
                   </div>
                 </div>`
-        );
-        finalPrice+=parseInt(priceData.substr(5));
-    }
+    );
+    finalPrice += parseInt(priceData.substr(5));
   }
-  document.querySelector(".final-price").innerText=finalPrice;
+  const newItem = document.querySelector(`#${data} .count`);
+  newItem.addEventListener("blur", update);
+  update();
+  document.querySelector(".final-price").innerText = finalPrice;
 }
+function update() {
+  finalPrice = 0;
+  document.querySelectorAll(".basket .col-md-3").forEach((item) => {
+    const price = parseInt(
+      item.querySelector(".price").innerText.replace("가격 : ", "")
+    );
+    const count = parseInt(item.querySelector(".count").value);
+    finalPrice += price * count;
+  });
+  document.querySelector(".final-price").innerText = finalPrice;
+}
+/**********
+ * 상품구매 *
+ ***********/
+//입력폼
+function buyItem() {
+  document.querySelector(".modal1").style.display = "block";
+}
+document.querySelector(".modal1 .close").addEventListener("click", function () {
+  document.querySelector(".modal1").style.display = "none";
+});
+
+//구매 영수증 이미지 표시
+document.querySelector(".show-receipt").addEventListener("click", function () {
+  document.querySelector(".modal1").style.display = "none";
+  document.querySelector(".modal2").style.display = "block";
+  var canvas = document.getElementById("canvas");
+  var c = canvas.getContext("2d");
+  c.font = "20px dotum";
+  finalPrice = 0;
+  var i = 1;
+  document.querySelectorAll(".basket .col-md-3").forEach((item) => {
+    const title = item.querySelector(".title").innerText;
+    const price = parseInt(
+      item.querySelector(".price").innerText.replace("가격 : ", "")
+    );
+    const count = parseInt(item.querySelector(".count").value);
+    finalPrice += price * count;
+    c.fillText(title, 30, i * 70 - 20);
+    c.fillText("가격 : " + price, 30, i * 70 + 5);
+    c.fillText("수량 : " + count, 30, i * 70 + 30);
+    i++;
+  });
+  document.querySelector(".final-price").innerText = finalPrice;
+  c.fillText("최종 가격 : " + finalPrice, 30, i * 70 - 20);
+});
+
+//영수증 닫기
+document.querySelector(".modal2 .close").addEventListener("click", function () {
+  document.querySelector(".modal2").style.display = "none";
+  var canvas = document.getElementById("canvas");
+  var c = canvas.getContext("2d");
+  c.clearRect(0, 0, canvas.width, canvas.height);
+});
