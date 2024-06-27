@@ -152,7 +152,6 @@ function handleDrop(ev) {
   }
   const newItem = document.querySelector(`#${data} .count`);
   newItem.addEventListener("blur", update);
-  update();
   document.querySelector(".final-price").innerText = finalPrice;
 }
 function update() {
